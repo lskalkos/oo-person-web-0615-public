@@ -1,8 +1,8 @@
 # your code goes here
 
 class Person
-  attr_accessor :bank_account, :happiness, :hygiene
-  attr_reader :name
+  attr_accessor :bank_account
+  attr_reader :name, :happiness, :hygiene
 
   def initialize(name)
     @name = name
@@ -11,64 +11,42 @@ class Person
     @hygiene = 8
   end
 
+
   def happiness=(score)
-    if score > 10
-      @happiness = 10
-    elsif score < 0
-      @happiness = 0
-    else
-      @happiness = score
-    end
+    @happiness = normalize_score(score)
   end
 
+
   def hygiene=(score)
-    if score > 10
-      @hygiene = 10
-    elsif score < 0
-      @hygiene = 0
-    else
-      @hygiene = score
-    end
+    @hygiene = normalize_score(score)
   end
 
   def happy?
-    if happiness > 7
-      true
-    else
-      false
-    end
+    valid_state?(self.happiness)
   end
 
   def clean?
-    if hygiene > 7
-      true
-    else
-      false
-    end
+    valid_state?(self.hygiene)
   end
 
   def get_paid(salary)
-    @bank_account = @bank_account + salary
+    self.bank_account = self.bank_account + salary
     "all about the benjamins"
   end
 
   def take_bath
-    new_hygiene = self.hygiene + 4
-    self.hygiene = new_hygiene
+    self.hygiene = self.hygiene + 4
     "♪ Rub-a-dub just relaxing in the tub ♫"
   end
 
   def work_out
-    new_hygiene = self.hygiene - 3
-    self.hygiene = new_hygiene
-    new_happiness = self.happiness + 2
-    self.happiness = new_happiness
+    self.hygiene = self.hygiene - 3
+    self.happiness = self.happiness + 2
     "♪ another one bites the dust ♫"
   end
 
   def call_friend(friend)
-    new_happiness = self.happiness + 3
-    self.happiness = new_happiness
+    self.happiness = self.happiness + 3
     friend.happiness = friend.happiness + 3
     "Hi #{friend.name}! It's #{self.name}. How are you?"
   end
@@ -87,5 +65,22 @@ class Person
     end
 
   end
+
+  private
+  def normalize_score(score)
+    if score > 10
+      10
+    elsif score < 0
+      0
+    else
+      score
+    end
+  end
+
+  def valid_state?(score)
+    score > 7 ? true : false
+  end
+
+
 
 end
